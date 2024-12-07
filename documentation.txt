@@ -1,0 +1,102 @@
+
+# Documentação do Programa de Gerenciamento de Navegadores
+
+## **Descrição Geral**
+
+Este programa gerencia múltiplos navegadores, permitindo a realização de cliques simultâneos e precisos em elementos configurados pelo usuário. Ele é otimizado para sistemas Linux e conta com funcionalidades robustas de detecção de falhas e resistência a alterações dinâmicas no DOM.
+
+---
+
+## **Arquitetura**
+
+### Componentes Principais:
+1. **main.py**: Controla o fluxo principal do programa.
+2. **config.py**: Armazena configurações globais, como navegadores e XPaths.
+3. **log_config.py**: Configura logs detalhados e coloridos para monitoramento.
+4. **navegador.py**: Gerencia instâncias de navegadores.
+5. **navegador_op.py**: Executa operações como validação de sessão e localização de elementos.
+6. **comando_exec.py**: Implementa comandos (`add`, `click`, `localize`, `new link`).
+7. **gerenciador_memoria.py**: Gerencia memória e swappiness.
+8. **gerenciador_sistema_avancado.py**: Otimiza CPU e prioridade do processo.
+9. **click_manager.py**: Realiza cliques sincronizados com precisão.
+
+---
+
+## **Funcionamento**
+
+### Passos:
+1. **Configuração Inicial**:
+   - Carrega logs e define configurações de sistema.
+   - Inicializa navegadores.
+
+2. **Execução**:
+   - Permite comandos em tempo real:
+     - `new link`: Configura novos links.
+     - `add`: Adiciona XPaths.
+     - `click`: Executa cliques sincronizados.
+     - `localize`: Localiza elementos.
+   - Atualiza configurações e mantém logs.
+
+3. **Encerramento**:
+   - Fecha navegadores e restaura configurações do sistema.
+
+---
+
+## **Recursos Destacados**
+
+1. **Sincronização de Cliques**:
+   - Clique simultâneo em diferentes navegadores.
+   - Precisão garantida com desvios inferiores a 1ms.
+
+2. **Resiliência**:
+   - Tolerante a falhas de sessão e DOM dinâmico.
+
+3. **Otimizações de Sistema**:
+   - Ajuste de afinidade de CPU.
+   - Priorização de processos.
+
+4. **Logs Detalhados**:
+   - Monitoramento em tempo real.
+
+---
+
+## **Instalação**
+
+### Pré-requisitos:
+- Python 3.8 ou superior.
+- Bibliotecas:
+  - `selenium`, `undetected-chromedriver`, `psutil`, `colorama`.
+
+### Passos:
+1. Clone o repositório.
+2. Instale as dependências:
+   ```
+   pip install -r requirements.txt
+   ```
+3. Execute:
+   ```
+   python main.py
+   ```
+
+---
+
+## **Exemplo de Uso**
+
+1. Configure os links nos navegadores:
+   ```
+   new link
+   ```
+2. Adicione os XPaths dos botões:
+   ```
+   add
+   ```
+3. Execute cliques simultâneos:
+   ```
+   click
+   ```
+
+---
+
+## **Licença**
+
+Este projeto é licenciado sob MIT License.

@@ -1,0 +1,55 @@
+#Comando de compilacao de biblioteca
+
+sudo dnf install python3-devel gcc #instalar gcc
+
+rm -rf build/
+
+pip install -e .
+
+>>>>>>>>>>>
+
+#Criar ambiente
+python3 -m venv venv
+
+source venv/bin/activate
+
+deactivate
+
+xhost +SI:localuser:root
+
+venv/bin/python main.py
+
+sudo venv/bin/python main.py
+
+# elevar o nivel de prioridade
+sudo renice -n -10 -p $(pgrep -f main.py)
+
+sudo renice -n -10 -p $(pgrep -f chromedriver)
+
+
+#OU Prioridade Total.
+sudo chrt -f 99 venv/bin/python main.py
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+#COMANDOS DE PRIORIDADE
+Inicie Seu Código: Execute o programa normalmente. Por exemplo:
+
+sudo chrt -f 99 venv/bin/python main.py
+
+Encontre o PID do Processo: Depois de o programa estar em execução, identifique o PID correspondente ao seu script. Use o comando:
+
+ps aux | grep python
+
+Encontre o PID do Processo: Depois de o programa estar em execução, identifique o PID correspondente ao seu script. Use o comando:
+
+ps aux | grep python
+
+Para confirmar que o ajuste foi aplicado, você pode verificar as informações do processo com:
+
+cat /proc/24760/io
+
+
+#Ver temperatura do PC
+
+watch -n 1 'sensors'
