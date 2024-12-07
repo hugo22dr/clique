@@ -1,51 +1,44 @@
+# Programa de Sincronização de Cliques com Módulo Kernel
 
-# Gerenciador de Navegadores com Cliques Sincronizados
+## **Visão Geral**
 
-## **Descrição**
-Este programa permite o gerenciamento e interação simultânea em navegadores distintos, realizando cliques precisos e sincronizados em elementos definidos pelo usuário. Ideal para cenários que exigem tolerância a falhas e operações coordenadas em múltiplas instâncias.
+Este projeto gerencia múltiplos navegadores para realizar **cliques simultâneos com precisão**. Ele foi desenvolvido para **Linux** e utiliza um **módulo kernel personalizado** para garantir sincronização em nível de hardware.
+
+---
 
 ## **Principais Funcionalidades**
-- **Cliques Simultâneos**: Sincronização com desvios mínimos entre as interações.
-- **Modularidade**: Componentes separados para logs, memória, CPU e cliques.
-- **Resiliência**: Continuidade mesmo com falhas de sessão ou alterações no DOM.
-- **Flexibilidade**: Adição de links e XPaths em tempo real.
 
-## **Comandos Disponíveis**
-1. `new link`: Configura novos links nos navegadores.
-2. `add`: Adiciona XPaths para elementos.
-3. `click`: Executa cliques sincronizados.
-4. `localize`: Localiza elementos configurados.
-5. `exit`: Encerra o programa.
+1. **Sincronização Precisa de Cliques**  
+   - Utiliza o módulo kernel `click_sync_kernel` para coordenar cliques simultâneos com mínimo desvio.
 
-## **Requisitos**
-- Python 3.8 ou superior.
-- Dependências:
-  ```
-  selenium
-  undetected-chromedriver
-  psutil
-  colorama
-  ```
+2. **Gerenciamento Avançado de Sistema**  
+   - Otimização de CPU, memória e prioridade dos processos.
+   - Configuração de swappiness e afinidade de CPU.
+
+3. **Interatividade em Tempo Real**  
+   - Comandos disponíveis no terminal:
+     - `new link` — Configura novos links nos navegadores.
+     - `add` — Adiciona novos XPaths dinamicamente.
+     - `click` — Executa cliques sincronizados nos elementos configurados.
+     - `localize` — Localiza os elementos no navegador configurado.
+
+4. **Resiliência e Robustez**  
+   - Tolerância a alterações no **DOM** ou erros temporários nos navegadores.
+
+---
+
+## **Pré-requisitos**
+
+- **Sistema Operacional**: Linux  
+- **Python**: Versão 3.8+  
+- **Dependências**:  
+   - `selenium`, `undetected-chromedriver`, `psutil`, `colorama`
+
+---
 
 ## **Instalação**
-1. Clone o repositório:
-   ```
-   git clone <url-do-repositorio>
-   cd <nome-do-repositorio>
-   ```
-2. Instale as dependências:
-   ```
-   pip install -r requirements.txt
-   ```
-3. Execute o programa:
-   ```
-   python main.py
-   ```
 
-## **Recomendações de Hardware**
-- **CPU**: Ryzen 9 5900X ou equivalente.
-- **RAM**: 32 GB.
-- **Armazenamento**: SSD NVMe.
-
-## **Licença**
-Este projeto é licenciado sob a MIT License.
+1. Clone o repositório e entre na pasta:
+   ```bash
+   git clone https://github.com/hugo22dr/clique
+   cd clique
