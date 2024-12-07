@@ -17,6 +17,10 @@ deactivate
 
 xhost +SI:localuser:root
 
+# Definir permissoes adequadas
+
+sudo chmod +rx /home/hugo22dr/.local/share/undetected_chromedriver/undetected_chromedriver/chromedriver
+
 venv/bin/python main.py
 
 sudo venv/bin/python main.py
@@ -53,3 +57,4 @@ cat /proc/24760/io
 #Ver temperatura do PC
 
 watch -n 1 'sensors'
+

@@ -53,7 +53,7 @@ def abrir_navegador(index=0):
         perfil = criar_perfil_navegador()
         options.add_argument(f"user-agent={perfil['user_agent']}")
         
-        driver_path = "/home/hugo22dr/.local/share/undetected_chromedriver/undetected_chromedriver/chromedriver"
+        driver_path = "/home/Kernel/drivers/chromedriver"
         driver = Chrome(options=options, driver_executable_path=driver_path)
 
         
