@@ -6,6 +6,8 @@ rm -rf build/
 
 pip install -e .
 
+gcc -shared -fPIC -pthread -O2 -o click_sync.so click_sync.c -I/usr/include/python3.13 -D_GNU_SOURCE
+
 >>>>>>>>>>>
 
 #Criar ambiente
@@ -14,6 +16,13 @@ python3 -m venv venv
 source venv/bin/activate
 
 deactivate
+
+sudo rmmod click_sync_kernel # Antes deve descarregar o kernel atual
+
+#DEPOIS...
+
+sudo insmod click_sync_kernel.ko # Carregue o Módulo Kernel do programa
+
 
 xhost +SI:localuser:root
 
@@ -58,3 +67,27 @@ cat /proc/24760/io
 
 watch -n 1 'sensors'
 
+
+
+
+#Carregar o módulo kernel:
+
+# Remove o módulo atual
+sudo rmmod click_sync_kernel
+
+# Carrega o novo módulo
+sudo insmod click_sync_kernel.ko
+
+lsmod | grep click_sync # verifica se o mod kernel esta sendo ultilizado
+
+#Definir as permissões no dispositivo:
+
+sudo chmod 666 /dev/click_sync
+
+#Ativar o ambiente virtual e executar o programa:
+
+source venv/bin/activate
+
+venv/bin/python main.py
+
+sudo cpupower frequency-set -g performance

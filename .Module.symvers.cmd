@@ -1,1 +1,1 @@
-savedcmd_/home/Kernel/clique/Module.symvers :=  scripts/mod/modpost -M        -o /home/Kernel/clique/Module.symvers -n -T /home/Kernel/clique/modules.order -i Module.symvers -e 
+savedcmd_/home/hugo22dr/clique/Module.symvers :=  scripts/mod/modpost -M        -o /home/hugo22dr/clique/Module.symvers -n -T /home/hugo22dr/clique/modules.order -i Module.symvers -e 

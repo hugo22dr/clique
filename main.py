@@ -1,4 +1,3 @@
-import click_sync
 from log_config import get_logger
 from navegador import abrir_navegador
 from comando_exec import executar_comando
@@ -8,6 +7,7 @@ from gerenciador_memoria import GerenciadorMemoria
 from gerenciador_sistema_avancado import EnhancedSystemManager
 from concurrent.futures import ThreadPoolExecutor
 from threading import Barrier
+from sync_constants import SyncDevice  # Nova importação
 
 logger = get_logger(__name__)
 
@@ -53,6 +53,7 @@ if __name__ == "__main__":
     click_manager = None
     memoria_manager = GerenciadorMemoria(logger)
     sistema_manager = EnhancedSystemManager(logger)
+    sync_device = None
     
     try:
         # Configurações de sistema e memória
@@ -60,10 +61,18 @@ if __name__ == "__main__":
         sistema_manager.optimize_cpu_affinity()
         sistema_manager.set_process_priority(high_priority=True)
         
+        # Inicializa dispositivo de sincronização
+        sync_device = SyncDevice()
+        
         # Inicialização do gerenciador de cliques
-        import click_sync
-        click_manager = LinuxPrecisionClickManager(max_workers=NUM_INSTANCIAS)
-
+        click_manager = LinuxPrecisionClickManager(
+            max_workers=NUM_INSTANCIAS,
+            logger=logger,
+            sync_device=sync_device  # Passa o dispositivo de sincronização
+        )
+        
+        # Configura número de threads no dispositivo
+        sync_device.set_threads(NUM_INSTANCIAS)
         
         # Abrir navegadores em paralelo
         drivers.clear()
@@ -94,6 +103,9 @@ if __name__ == "__main__":
         # Limpezas gerais
         if click_manager and hasattr(click_manager, "cleanup"):
             click_manager.cleanup()
+
+        if sync_device:
+            del sync_device  # Garante que o dispositivo seja fechado
 
         fechar_navegadores()
         sistema_manager.graceful_shutdown()

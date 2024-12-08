@@ -44,6 +44,11 @@ def abrir_navegador(index=0):
     options.add_argument("--disable-infobars")
     options.add_argument("--disable-notifications")
     
+    # Configurações para evitar throttling e manter performance máxima
+    options.add_argument("--disable-background-timer-throttling")
+    options.add_argument("--disable-backgrounding-occluded-windows")
+    options.add_argument("--disable-renderer-backgrounding")
+
     # Configurações para evitar detecção sem impactar performance
     options.add_argument("--disable-webgl")
     options.add_argument("--disable-3d-apis")
@@ -53,9 +58,13 @@ def abrir_navegador(index=0):
         perfil = criar_perfil_navegador()
         options.add_argument(f"user-agent={perfil['user_agent']}")
         
-        driver_path = "/home/Kernel/drivers/chromedriver"
+        driver_path = "/home/hugo22dr/.local/share/undetected_chromedriver/undetected_chromedriver/chromedriver"
         driver = Chrome(options=options, driver_executable_path=driver_path)
-
+        
+        return driver
+    except Exception as e:
+        print(f"Erro ao abrir navegador {index}: {e}")
+        return None
         
         # Configuração stealth leve
         stealth(
