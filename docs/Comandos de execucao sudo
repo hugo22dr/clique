@@ -1,0 +1,144 @@
+#Comando de compilacao de biblioteca
+
+sudo dnf install python3-devel gcc #instalar gcc
+
+rm -rf build/
+
+pip install -e .
+
+gcc -shared -fPIC -pthread -O2 -o click_sync.so click_sync.c -I/usr/include/python3.13 -D_GNU_SOURCE
+
+>>>>>>>>>>>
+
+#Criar ambiente
+python3 -m venv venv
+
+source venv/bin/activate
+
+deactivate
+
+sudo rmmod click_sync_kernel # Antes deve descarregar o kernel atual
+
+#DEPOIS...
+
+sudo insmod click_sync_kernel.ko # Carregue o Módulo Kernel do programa
+
+
+# Definir permissoes adequadas
+
+sudo chmod +rx /home/hugo22dr/.local/share/undetected_chromedriver/undetected_chromedriver/chromedriver
+
+venv/bin/python main.py
+
+sudo venv/bin/python main.py
+
+# elevar o nivel de prioridade
+sudo renice -n -10 -p $(pgrep -f main.py)
+
+sudo renice -n -10 -p $(pgrep -f chromedriver)
+
+
+#OU Prioridade Total.
+sudo chrt -f 99 venv/bin/python main.py
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+#COMANDOS DE PRIORIDADE
+Inicie Seu Código: Execute o programa normalmente. Por exemplo:
+
+Encontre o PID do Processo: Depois de o programa estar em execução, identifique o PID correspondente ao seu script. Use o comando:
+
+ps aux | grep python
+
+Encontre o PID do Processo: Depois de o programa estar em execução, identifique o PID correspondente ao seu script. Use o comando:
+
+ps aux | grep python
+
+Para confirmar que o ajuste foi aplicado, você pode verificar as informações do processo com:
+
+cat /proc/24760/io
+
+
+#Ver temperatura do PC
+
+watch -n 1 'sensors'
+
+
+
+
+#Carregar o módulo kernel:
+
+# Remove o módulo atual
+sudo rmmod click_sync_kernel
+
+# Carrega o novo módulo
+sudo insmod click_sync_kernel.ko
+
+lsmod | grep click_sync # verifica se o mod kernel esta sendo ultilizado
+
+#Definir as permissões no dispositivo:
+
+sudo chmod 666 /dev/click_sync
+
+sudo chmod 666 /dev/precise_sync
+
+#Ativar o ambiente virtual e executar o programa:
+
+source venv/bin/activate
+
+venv/bin/python main.py
+
+sudo cpupower frequency-set -g performance
+
+./run.sh
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+# RECOMPILACAO DETALHADA.
+# Primeiro remova o módulo atual
+sudo rmmod click_sync_kernel
+
+# Recompile com o código atualizado
+make clean
+make
+
+# Carregue o módulo novamente
+sudo insmod click_sync_kernel.ko
+
+# Verifique se o dispositivo foi criado com o nome correto
+ls -l /dev/precise_sync
+
+python3 setup.py build_ext --inplace # Recompilar o wrapper
+
+
+
+
+chmod +x scripts/run.sh scripts/setup_device_robust.sh # Permicao dos scripts no novo diretorio
+
+chmod +x scripts/run.sh # Permicao de execucao
+
+chmod +x scripts/setup_device_robust.sh # Permicao de execucao
+
+
+# Compilacao completa da nova estrutura do projeto
+# Para compilar e instalar:
+cd modules
+make clean
+make
+sudo make load
+
+# Depois verifique se o módulo foi carregado corretamente:
+
+lsmod | grep click_sync
+
+dmesg | tail -n 5
+
+ls -l /dev/precise_sync  # Verifica se o dispositivo foi criado
+
+>>>>>>>>>>>>>>>>>>>>>>>>
+
+xhost +local:root # Permitir visibilidade do navegador.
+
+xhost +SI:localuser:root
+
+./scripts/run.sh  #Comando de execucao
+

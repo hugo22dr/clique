@@ -1,0 +1,37 @@
+>>>>>>>>>>>>>>>>>>>>>>>>>>
+https://www.segurobet.com/
+
+hugovemnenos@icloud.com
+>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+BOTOES DE LOGIN:
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+//div[contains(@class, 'NESTED VIEW')]//div[contains(@class, 'nested__wrapper') and contains(@class, 'nested__wrapper--padding')]
+
+//button[@type='submit']
+
+BOTOES DE BONUS:
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+//span[@class='custom_modalClose']
+
+//button[contains(@class, 'v3-btn-default') and contains(text(), 'Não')] ? <<NAO!!>>
+
+//button[contains(@class, 'v3-btn-primary') and contains(text(), 'Sim')] ? <<SIM!!>>
+
+//button[contains(@class, 'x-button--cancel') and @type='button']
+
+
+
+
+google
+//input[contains(@class, 'gNO89b')]
+
+//input[@value='Pesquisa Google']
+
+//input[contains(@class, 'gNO89b') and @type='submit']
+
+
+https://www.google.com/
+

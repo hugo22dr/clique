@@ -1,0 +1,8 @@
+README.md
+click_sync.c
+click_sync_wrapper.c
+setup.py
+click_sync.egg-info/PKG-INFO
+click_sync.egg-info/SOURCES.txt
+click_sync.egg-info/dependency_links.txt
+click_sync.egg-info/top_level.txt

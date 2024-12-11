@@ -1,0 +1,17 @@
+setup.py
+./src/__init__.py
+./src/click_manager.py
+./src/comando_exec.py
+./src/config.py
+./src/gerenciador_memoria.py
+./src/gerenciador_sistema_avancado.py
+./src/log_config.py
+./src/main.py
+./src/navegador.py
+./src/navegador_op.py
+./src/sync_constants.py
+/home/hugo22dr/clique/modules/click_sync_wrapper.c
+click_sync.egg-info/PKG-INFO
+click_sync.egg-info/SOURCES.txt
+click_sync.egg-info/dependency_links.txt
+click_sync.egg-info/top_level.txt
