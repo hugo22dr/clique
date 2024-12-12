@@ -102,44 +102,104 @@ class LinuxPrecisionClickManager:
             self.logger.error(f"Erro ao preparar browser: {e}")
 
     def _ultra_precise_synchronized_click(self, driver, xpath):
-        """Executa clique com sincronização precisa."""
+        """Executa clique com sincronização precisa e limpeza de estado."""
         try:
-            # Prepara elemento
-            element = driver.find_element(By.XPATH, xpath)
+            # Pre-localiza e valida elemento
+            element = WebDriverWait(driver, 1).until(
+                EC.presence_of_element_located((By.XPATH, xpath))
+            )
+            
+            # Limpa estado do navegador antes do clique
+            driver.execute_script("""
+                // Limpa filas de eventos
+                window.eventQueue = [];
+                const originalAddEventListener = EventTarget.prototype.addEventListener;
+                EventTarget.prototype.addEventListener = function(type, listener, options) {
+                    if (!this.eventQueue) this.eventQueue = [];
+                    this.eventQueue.push({type, listener, options});
+                    return originalAddEventListener.call(this, type, listener, options);
+                };
 
-            # Código de click otimizado
-            js_click = """
-                function preciseClick(el) {
-                    const evt = new MouseEvent('click', {
-                        bubbles: true,
-                        cancelable: true,
-                        view: window,
-                        detail: 1
-                    });
+                // Força finalização de todas as animações
+                const styles = document.createElement('style');
+                styles.type = 'text/css';
+                styles.innerHTML = '* { animation-duration: 0s !important; transition-duration: 0s !important; }';
+                document.head.appendChild(styles);
 
-                    // Bypass do event loop
-                    const target = el.cloneNode(true);
-                    el.parentNode.replaceChild(target, el);
-
-                    const start = performance.now();
-                    target.dispatchEvent(evt);
-                    return performance.now() - start;
+                // Força sincronização do DOM
+                document.documentElement.getBoundingClientRect();
+                
+                // Limpa timers pendentes
+                const highestId = window.setTimeout(() => {}, 0);
+                for (let i = 0; i < highestId; i++) {
+                    window.clearTimeout(i);
+                    window.clearInterval(i);
                 }
-                return preciseClick(arguments[0]);
-            """
+                
+                // Desativa throttling
+                if (window.requestIdleCallback) {
+                    window.cancelIdleCallback(window.requestIdleCallback(() => {}));
+                }
+                
+                // Força GC
+                if (window.gc) {
+                    window.gc();
+                }
+                
+                // Remove event listeners existentes do elemento
+                const clone = arguments[0].cloneNode(true);
+                arguments[0].parentNode.replaceChild(clone, arguments[0]);
+                
+                // Garante que o DOM está estável
+                return new Promise(resolve => {
+                    const observer = new MutationObserver((mutations, obs) => {
+                        obs.disconnect();
+                        resolve();
+                    });
+                    
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true,
+                        attributes: true,
+                        characterData: true
+                    });
+                    
+                    // Força uma verificação após 10ms
+                    setTimeout(() => {
+                        observer.disconnect();
+                        resolve();
+                    }, 10);
+                });
+            """, element)
 
-            # Sincronização kernel
-            start_time = time.monotonic_ns()
+            # Sincronização via kernel
             fcntl.ioctl(self.sync_fd, PRECISE_SYNC_WAIT)
-
-            # Executa click
-            click_time = driver.execute_script(js_click, element)
-
+            
+            # Timestamp preciso pré-clique
+            start_time = time.monotonic_ns()
+            
+            # Executa click com bypass de event listeners
+            driver.execute_script("""
+                const evt = new MouseEvent('click', {
+                    bubbles: false,
+                    cancelable: true,
+                    view: window
+                });
+                
+                // Bypass da fila de eventos
+                Object.defineProperty(evt, '_bypassQueue', {
+                    value: true,
+                    writable: false
+                });
+                
+                arguments[0].dispatchEvent(evt);
+            """, element)
+            
+            # Timestamp pós-clique
             end_time = time.monotonic_ns()
             deviation = end_time - start_time
 
-            self.logger.info(f"[Clique] Navegador {driver.session_id}: Desvio = {deviation/1000:.2f}μs, "
-                             f"Tempo click = {click_time:.2f}ms")
+            self.logger.info(f"[Clique] Navegador {driver.session_id}: Desvio = {deviation/1000:.2f}μs")
             return True, deviation
 
         except Exception as e:
